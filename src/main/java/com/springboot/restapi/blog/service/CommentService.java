@@ -1,9 +1,8 @@
 package com.springboot.restapi.blog.service;
 
-import com.springboot.restapi.blog.payload.CommentDto;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
+
+import com.springboot.restapi.blog.payload.CommentDto;
 
 public interface CommentService {
 

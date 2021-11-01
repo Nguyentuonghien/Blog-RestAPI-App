@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.restapi.blog.entity.Role;
 import com.springboot.restapi.blog.entity.User;
+import com.springboot.restapi.blog.payload.JWTAuthResponse;
 import com.springboot.restapi.blog.payload.LoginDto;
 import com.springboot.restapi.blog.payload.SignUpDto;
 import com.springboot.restapi.blog.repository.RoleRepository;
 import com.springboot.restapi.blog.repository.UserRepository;
+import com.springboot.restapi.blog.security.JwtTokenProvider;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -39,13 +41,20 @@ public class AuthController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
+	
 	@PostMapping("/signin")
-	public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
-		Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				loginDto.getUsernameOrEmail(), loginDto.getPassword()));
+	public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
+		// dùng AuthenticationManager để xác thực từ username và password, nếu không xảy ra exception tức là thông tin đăng nhập hợp lệ 
+		// -> Set thông tin authentication vào Security Context và tạo ra token cho client
 		
-		SecurityContextHolder.getContext().setAuthentication(authenticate);
-		return new ResponseEntity<>("User signed-in successfully.", HttpStatus.OK);
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+				                        loginDto.getUsernameOrEmail(), loginDto.getPassword()));		
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		String token = jwtTokenProvider.generateToken(authentication);
+		return ResponseEntity.ok(new JWTAuthResponse(token));
 	}
 	
 	@PostMapping("/signup")

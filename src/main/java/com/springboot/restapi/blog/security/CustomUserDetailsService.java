@@ -36,6 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 //		}
 //		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
 		
+        // trả về một implementation của UserDetails, hàm khởi tạo của lớp này sẽ nhận 3 tham số: username, password và các quyền của user 
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
 	}
 	

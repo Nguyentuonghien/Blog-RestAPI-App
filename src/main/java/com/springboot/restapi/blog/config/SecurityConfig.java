@@ -48,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // đảm bảo rằng ta sử dụng stateless session, session sẽ không được sử dụng để lưu trữ trạng thái của người dùng.
 		    .and()
 		    .authorizeRequests()
-		    .antMatchers(HttpMethod.GET, "/api/**").permitAll()
-		    .antMatchers("/api/auth/**").permitAll()
+		    .antMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
+		    .antMatchers("/api/v1/auth/**").permitAll()
 		    .anyRequest().authenticated();
 		
 		// add filter để validate các tokens với mọi request

@@ -26,7 +26,7 @@ import com.springboot.restapi.blog.repository.UserRepository;
 import com.springboot.restapi.blog.security.JwtTokenProvider;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 	
 	@Autowired
